@@ -18,13 +18,13 @@ public class CarsController : BaseApiController
     [HttpGet]
     public async Task<ActionResult<List<Car>>> GetCars()
     {
-        return await _sender.Send(new GetCarsList().Query());
+        return await _sender.Send(new GetCarsList.Query());
     }
 
     [HttpGet("{id:guid}")]
     public async Task<ActionResult<Car>> GetCar(Guid id)
     {
-        var car = await _sender.Send(new Details.Query() { Id = id });
+        var car = await _sender.Send(new Details.Query { Id = id });
         if (car is null) return NotFound();
         return car;
     }

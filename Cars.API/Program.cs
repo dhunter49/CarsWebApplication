@@ -83,6 +83,11 @@ builder.Services.AddTransient(
         typeof(IPipelineBehavior<,>),
         typeof(ValidationBehavior<,>));
 
+builder.Services.Configure<EmailSettings>(
+    builder.Configuration.GetSection("Smtp"));
+
+builder.Services.AddScoped<IEmailService, EmailService>();
+
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionMiddleware>();
@@ -101,6 +106,16 @@ try
     var context = services.GetRequiredService<DataContext>();
     await context.Database.MigrateAsync();
     await Seed.SeedData(context);
+    
+    var userManager = services.GetRequiredService<
+        UserManager<AppUser>>();
+
+    var roleManager = services.GetRequiredService<
+        RoleManager<IdentityRole>>();
+
+    await IdentitySeed.SeedAsync(
+        userManager,
+        roleManager);
 }
 catch (Exception ex)
 {

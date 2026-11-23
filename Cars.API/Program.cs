@@ -91,6 +91,8 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 var app = builder.Build();
 
 app.UseMiddleware<ApiExceptionMiddleware>();
+app.UseStaticFiles();
+app.UseRouting();
 app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 app.UseAuthentication();

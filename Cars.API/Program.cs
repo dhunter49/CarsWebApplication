@@ -114,6 +114,8 @@ try
 
     var roleManager = services.GetRequiredService<
         RoleManager<IdentityRole>>();
+    
+    await FeatureSeed.SeedAsync(context);
 
     await IdentitySeed.SeedAsync(
         userManager,
